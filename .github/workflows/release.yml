@@ -2,10 +2,8 @@ name: Release
 
 on:
   push:
-    branches:
-      - main
-      - release
-      - develop
+    branches: [main, develop, release, 'hotfix/**']
+  workflow_dispatch:
 
 permissions:
   contents: write
