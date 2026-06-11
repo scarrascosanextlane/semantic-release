@@ -9,6 +9,10 @@ permissions:
   contents: write
   issues: write
   pull-requests: write
+  # NOTE: there is no permission here that lets the default GITHUB_TOKEN push
+  # commits/tags whose history modifies .github/workflows/** — GitHub blocks
+  # that unconditionally. A release should never push workflow changes anyway;
+  # if you ever need to, use a PAT or GitHub App with the `workflow` scope.
 
 jobs:
   release:
@@ -41,7 +45,10 @@ jobs:
           for tag in $(git tag -l 'v*-beta.*'); do
             if ! git merge-base --is-ancestor "$tag" HEAD; then
               echo "Pruning orphaned prerelease tag $tag (not an ancestor of $(git rev-parse --short HEAD))"
+              # Remove from the remote (no-op if it was never pushed)...
               git push origin ":refs/tags/$tag" || true
+              # ...and locally, so `git push --tags` doesn't re-attempt it next run.
+              git tag -d "$tag" || true
             fi
           done
 
