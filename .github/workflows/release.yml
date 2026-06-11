@@ -3,6 +3,7 @@ name: Release
 on:
   push:
     branches: [main, develop, release, 'hotfix/**']
+  workflow_dispatch:
 
 permissions:
   contents: write
