@@ -2,10 +2,8 @@ name: Release
 
 on:
   push:
-    branches:
-      - main
-      - release
-      - develop
+    branches: [main, develop, release, 'hotfix/**']
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -16,6 +14,8 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+    outputs:
+      new_release_version: ${{ steps.semantic_release.outputs.new_release_version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -34,7 +34,51 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Prune orphaned prerelease tags
+        if: github.ref == 'refs/heads/release'
+        run: |
+          git fetch --tags --force
+          for tag in $(git tag -l 'v*-beta.*'); do
+            if ! git merge-base --is-ancestor "$tag" HEAD; then
+              echo "Pruning orphaned prerelease tag $tag (not an ancestor of $(git rev-parse --short HEAD))"
+              git push origin ":refs/tags/$tag" || true
+            fi
+          done
+
       - name: Release
+        id: semantic_release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm run semantic-release
+        run: |
+          npm run semantic-release
+          echo "new_release_version=$(cat .release-version 2>/dev/null || echo '')" >> $GITHUB_OUTPUT
+
+  build-and-push-ecr:
+    name: Build & Push Docker image to ECR
+    needs: release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Echo generated tag
+        run: echo "Docker image tag to push -> ${{ needs.release.outputs.new_release_version }}"
+
+      - name: Build Docker image (placeholder)
+        run: echo "docker build -t <ecr-repo>:${{ needs.release.outputs.new_release_version }} ."
+
+      - name: Push Docker image to ECR (placeholder)
+        run: |
+          echo "Pushing image with tag -> ${{ needs.release.outputs.new_release_version }}"
+          echo "docker push <ecr-repo>:${{ needs.release.outputs.new_release_version }}"
+
+  deploy-to-ecs:
+    name: Deploy Docker image from ECR to ECS
+    needs: build-and-push-ecr
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo image being deployed
+        run: echo "Deploying image tag -> ${{ needs.release.outputs.new_release_version }} from ECR to ECS"
+
+      - name: Update ECS service (placeholder)
+        run: echo "aws ecs update-service --cluster <cluster> --service <service> --force-new-deployment"
