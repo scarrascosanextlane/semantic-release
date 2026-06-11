@@ -68,7 +68,9 @@ jobs:
         run: echo "docker build -t <ecr-repo>:${{ needs.release.outputs.new_release_version }} ."
 
       - name: Push Docker image to ECR (placeholder)
-        run: echo "docker push <ecr-repo>:${{ needs.release.outputs.new_release_version }}"
+        run: |
+          echo "Pushing image with tag -> ${{ needs.release.outputs.new_release_version }}"
+          echo "docker push <ecr-repo>:${{ needs.release.outputs.new_release_version }}"
 
   deploy-to-ecs:
     name: Deploy Docker image from ECR to ECS

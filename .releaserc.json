@@ -18,23 +18,69 @@
       {
         "parserOpts": {
           "headerPattern": "^\\[(\\w+)\\]\\s+([\\w-]+):\\s+(.+)$",
-          "headerCorrespondence": ["type", "scope", "subject"],
-          "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES"]
+          "headerCorrespondence": [
+            "type",
+            "scope",
+            "subject"
+          ],
+          "noteKeywords": [
+            "BREAKING CHANGE",
+            "BREAKING CHANGES"
+          ]
         },
         "releaseRules": [
-          { "type": "FEAT",     "release": "minor" },
-          { "type": "FIX",      "release": "patch" },
-          { "type": "PERF",     "release": "patch" },
-          { "type": "REVERT",   "release": "patch" },
-          { "type": "HOTFIX",   "release": "patch" },
-          { "type": "BREAKING", "release": "major" },
-          { "type": "DOCS",     "release": false },
-          { "type": "STYLE",    "release": false },
-          { "type": "REFACTOR", "release": false },
-          { "type": "TEST",     "release": false },
-          { "type": "CHORE",    "release": false },
-          { "type": "BUILD",    "release": false },
-          { "type": "CI",       "release": false }
+          {
+            "type": "FEAT",
+            "release": "minor"
+          },
+          {
+            "type": "FIX",
+            "release": "patch"
+          },
+          {
+            "type": "PERF",
+            "release": "patch"
+          },
+          {
+            "type": "REVERT",
+            "release": "patch"
+          },
+          {
+            "type": "HOTFIX",
+            "release": "patch"
+          },
+          {
+            "type": "BREAKING",
+            "release": "major"
+          },
+          {
+            "type": "DOCS",
+            "release": false
+          },
+          {
+            "type": "STYLE",
+            "release": false
+          },
+          {
+            "type": "REFACTOR",
+            "release": false
+          },
+          {
+            "type": "TEST",
+            "release": false
+          },
+          {
+            "type": "CHORE",
+            "release": false
+          },
+          {
+            "type": "BUILD",
+            "release": false
+          },
+          {
+            "type": "CI",
+            "release": false
+          }
         ]
       }
     ],
@@ -43,9 +89,22 @@
       {
         "parserOpts": {
           "headerPattern": "^\\[(\\w+)\\]\\s+([\\w-]+):\\s+(.+)$",
-          "headerCorrespondence": ["type", "scope", "subject"],
-          "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES"]
+          "headerCorrespondence": [
+            "type",
+            "scope",
+            "subject"
+          ],
+          "noteKeywords": [
+            "BREAKING CHANGE",
+            "BREAKING CHANGES"
+          ]
         }
+      }
+    ],
+    [
+      "@semantic-release/exec",
+      {
+        "verifyReleaseCmd": "echo ${nextRelease.version} > .release-version"
       }
     ],
     "@semantic-release/github"
