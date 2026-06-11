@@ -36,6 +36,17 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Prune orphaned prerelease tags
+        if: github.ref == 'refs/heads/release'
+        run: |
+          git fetch --tags --force
+          for tag in $(git tag -l 'v*-beta.*'); do
+            if ! git merge-base --is-ancestor "$tag" HEAD; then
+              echo "Pruning orphaned prerelease tag $tag (not an ancestor of $(git rev-parse --short HEAD))"
+              git push origin ":refs/tags/$tag" || true
+            fi
+          done
+
       - name: Release
         id: semantic_release
         env:
