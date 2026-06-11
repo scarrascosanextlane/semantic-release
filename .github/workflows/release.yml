@@ -2,10 +2,7 @@ name: Release
 
 on:
   push:
-    branches:
-      - main
-      - release
-      - develop
+    branches: [main, develop, release, 'hotfix/**']
 
 permissions:
   contents: write
