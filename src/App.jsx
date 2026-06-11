@@ -5,6 +5,7 @@ function App() {
     <div className="app">
       <h1>Semantic Release Demo</h1>
       <p>This app uses semantic-release for automated versioning and changelog generation.</p>
+      <h1>Semantic Release Demo</h1>
     </div>
   )
 }
