@@ -1,0 +1,112 @@
+{
+  "branches": [
+    "main",
+    {
+      "name": "release",
+      "prerelease": "beta",
+      "channel": "beta"
+    },
+    {
+      "name": "develop",
+      "prerelease": "alpha",
+      "channel": "alpha"
+    }
+  ],
+  "plugins": [
+    [
+      "@semantic-release/commit-analyzer",
+      {
+        "parserOpts": {
+          "headerPattern": "^\\[(\\w+)\\]\\s+([\\w-]+):\\s+(.+)$",
+          "headerCorrespondence": [
+            "type",
+            "scope",
+            "subject"
+          ],
+          "noteKeywords": [
+            "BREAKING CHANGE",
+            "BREAKING CHANGES"
+          ]
+        },
+        "releaseRules": [
+          {
+            "type": "FEAT",
+            "release": "minor"
+          },
+          {
+            "type": "FIX",
+            "release": "patch"
+          },
+          {
+            "type": "PERF",
+            "release": "patch"
+          },
+          {
+            "type": "REVERT",
+            "release": "patch"
+          },
+          {
+            "type": "HOTFIX",
+            "release": "patch"
+          },
+          {
+            "type": "BREAKING",
+            "release": "major"
+          },
+          {
+            "type": "DOCS",
+            "release": false
+          },
+          {
+            "type": "STYLE",
+            "release": false
+          },
+          {
+            "type": "REFACTOR",
+            "release": false
+          },
+          {
+            "type": "TEST",
+            "release": false
+          },
+          {
+            "type": "CHORE",
+            "release": false
+          },
+          {
+            "type": "BUILD",
+            "release": false
+          },
+          {
+            "type": "CI",
+            "release": false
+          }
+        ]
+      }
+    ],
+    [
+      "@semantic-release/release-notes-generator",
+      {
+        "parserOpts": {
+          "headerPattern": "^\\[(\\w+)\\]\\s+([\\w-]+):\\s+(.+)$",
+          "headerCorrespondence": [
+            "type",
+            "scope",
+            "subject"
+          ],
+          "noteKeywords": [
+            "BREAKING CHANGE",
+            "BREAKING CHANGES"
+          ]
+        }
+      }
+    ],
+    [
+      "@semantic-release/exec",
+      {
+        "verifyReleaseCmd": "echo ${nextRelease.version} > .release-version"
+      }
+    ],
+    "@semantic-release/github"
+  ]
+}
