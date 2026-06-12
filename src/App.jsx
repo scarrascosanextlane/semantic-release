@@ -4,7 +4,7 @@ function App() {
   return (
     <div className="app">
       <h1>Fresh Start</h1>
-      <p>Clean slate ready to build.</p>
+      <p>Clen slate ready to buld.</p>
     </div>
   )
 }
