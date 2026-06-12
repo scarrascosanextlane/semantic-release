@@ -3,8 +3,8 @@ import './App.css'
 function App() {
   return (
     <div className="app">
-      <h1>Semantic Release Demo</h1>
-      <p>This app uses semantic-release for automated versioning and changelog generation.</p>
+      <h1>Fresh Start</h1>
+      <p>Clean slate ready to build.</p>
     </div>
   )
 }
